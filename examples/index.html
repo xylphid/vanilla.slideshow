@@ -3,12 +3,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../requirements/jQuery.modal/jquery.modal.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../requirements/jQuery.touchSwipe/jquery.touchSwipe.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../jquery.slideshow.js" type="text/javascript" charset="utf-8"></script>
-        <link rel="stylesheet" href="../requirements/jQuery.modal/jquery.modal.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="../jquery.slideshow.css" type="text/css" media="screen" />
+        <script src="../../vanilla/vanilla.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../vanilla.slideshow.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" href="../vanilla.slideshow.css" type="text/css" media="screen" />
         <style type="text/css">
         body {
             box-shadow:0px 0px 5px #000;
@@ -22,8 +19,11 @@
             box-shadow: 0px 0px 2px #000;
             background-color:#F0F0F0;
         }
-        div.single, [class^=gallery] {
+        div[id^=example] {
             display:flex;
+        }
+        div.example a {
+            padding:5px;
         }
         </style>
     </head>
@@ -32,137 +32,111 @@
 
         <h2>Single image with automatic load</h2>
         <!-- Single image automatic -->
-        <div class="single">
-            <a href="image1.jpg" rel="slideshow:open"><img src="thumbs/image1.jpg" /></a>
+        <p class="tutorial">Add <strong>data-slideshow</strong> attribute to the link surrounding your thumbnail.</p>
+        <div id="example-1" class="example">
+            <a href="image1.jpg" data-slideshow><img src="thumbs/image1.jpg" /></a>
         </div>
         <pre><code>
-    &lt;div class=&quot;single&quot;&gt;
-        &lt;a href=&quot;image1.jpg&quot; rel=&quot;slideshow:open&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+    &lt;div id=&quot;example-1&quot; class=&quot;example&quot;&gt;
+        &lt;a href=&quot;image1.jpg&quot; data-slideshow&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
     &lt;/div&gt;
         </code></pre>
 
-        <h2>Single image manually invoked</h2>
+        <h2>Automatically attaching to link</h2>
         <!-- Single image and manually invoked -->
-        <div class="single">
-            <a href="image1.jpg" id="single"><img src="thumbs/image1.jpg" /></a>
+        <div id="example-2" class="example">
+            <a href="image1.jpg"><img src="thumbs/image1.jpg" /></a>
+            <a href="image2.jpg"><img src="thumbs/image2.jpg" /></a>
+            <a href="image3.jpg"><img src="thumbs/image3.jpg" /></a>
+            <a href="image4.jpg"><img src="thumbs/image4.jpg" /></a>
         </div>
         <script type="text/javascript">
-        $('#single').on('click', function(){
-            $(this).slideshow();
-            return false;
+        vanilla( '#example-2 > a' ).on('click', function(event) {
+            event.preventDefault();
+            vanilla( this ).slideshow();
         });
         </script>
         <pre><code>
-    &lt;div class=&quot;single&quot;&gt;
-        &lt;a href=&quot;image1.jpg&quot; id=&quot;single&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+    &lt;div id=&quot;example-2&quot;&gt;
+        &lt;a href=&quot;image1.jpg&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;a href=&quot;image2.jpg&quot;&gt;&lt;img src=&quot;thumbs/image2.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;a href=&quot;image3.jpg&quot;&gt;&lt;img src=&quot;thumbs/image3.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;a href=&quot;image4.jpg&quot;&gt;&lt;img src=&quot;thumbs/image4.jpg&quot; /&gt;&lt;/a&gt;
     &lt;/div&gt;
     &lt;script type=&quot;text/javascript&quot;&gt;
-    $('#single').on('click', function(){
-        $(this).slideshow();
-        return false;
+    vanilla( '#example-2 &gt; a' ).on('click', function(event) {
+        event.preventDefault();
+        vanilla( this ).slideshow();
     });
     &lt;/script&gt;
         </code></pre>
 
-        <h2>Gallery manually invoked</h2>
-        <!-- Gallery and manually invoke -->
-        <div id="gallery1">
-            <a href="image1.jpg" class="slide"><img src="thumbs/image1.jpg" /></a>
-            <a href="image2.jpg" class="slide"><img src="thumbs/image2.jpg" /></a>
-            <a href="image3.jpg" class="slide"><img src="thumbs/image3.jpg" /></a>
-            <a href="image4.jpg" class="slide"><img src="thumbs/image4.jpg" /></a>
+        <h2>Attaching slideshow to a link collection</h2>
+        <!-- Single image and manually invoked -->
+        <div id="example-3" class="example">
+            <a href="image1.jpg"><img src="thumbs/image1.jpg" /></a>
         </div>
         <script type="text/javascript">
-        $('#gallery1 > .slide').on('click', function(){
-            $(this).slideshow();
-            return false;
-        });
+        vanilla.slideshow( '#example-3 > a' );
+
+        // Append second image
+        vanilla('<a>').attr('href', 'image2.jpg')
+            .append( vanilla('<img>').attr('src', 'thumbs/image2.jpg') )
+            .appendTo('#example-3');
+        // Append third image
+        vanilla('<a>').attr('href', 'image3.jpg')
+            .append( vanilla('<img>').attr('src', 'thumbs/image3.jpg') )
+            .appendTo('#example-3');
+        // Append fourth image
+        vanilla('<a>').attr('href', 'image4.jpg')
+            .append( vanilla('<img>').attr('src', 'thumbs/image4.jpg') )
+            .appendTo('#example-3');
         </script>
         <pre><code>
-    &lt;div id=&quot;gallery1&quot;&gt;
-        &lt;a href=&quot;image1.jpg&quot; class=&quot;slide&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image2.jpg&quot; class=&quot;slide&quot;&gt;&lt;img src=&quot;thumbs/image2.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image3.jpg&quot; class=&quot;slide&quot;&gt;&lt;img src=&quot;thumbs/image3.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image4.jpg&quot; class=&quot;slide&quot;&gt;&lt;img src=&quot;thumbs/image4.jpg&quot; /&gt;&lt;/a&gt;
+    &lt;div id=&quot;example-2&quot;&gt;
+        &lt;a href=&quot;image1.jpg&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;!-- Not loaded content will match the selector --&gt;
     &lt;/div&gt;
     &lt;script type=&quot;text/javascript&quot;&gt;
-    $('#gallery1 &gt; .slide').on('click', function(){
-        $(this).slideshow();
-        return false;
-    });
+    vanilla.slideshow( '#example-3 &gt; a' );
+
+    // Append second image
+    vanilla('&lt;a&gt;').attr('href', 'image2.jpg')
+        .append( vanilla('&lt;img&gt;').attr('src', 'thumbs/image2.jpg') )
+        .appendTo('#example-3');
+
+    // Append third image
+    vanilla('&lt;a&gt;').attr('href', 'image3.jpg')
+        .append( vanilla('&lt;img&gt;').attr('src', 'thumbs/image3.jpg') )
+        .appendTo('#example-3');
+
+    // Append fourth image
+    vanilla('&lt;a&gt;').attr('href', 'image4.jpg')
+        .append( vanilla('&lt;img&gt;').attr('src', 'thumbs/image4.jpg') )
+        .appendTo('#example-3');
     &lt;/script&gt;
         </code></pre>
 
-        <h2>Gallery manually invoked with slideshow</h2>
-        <!-- Gallery and manually invoke with slideshow -->
-        <div id="gallery2">
-            <a href="image1.jpg" class="slide" data-target="slideshow"><img src="thumbs/image1.jpg" /></a>
-            <a href="image2.jpg" class="slide" data-target="slideshow"><img src="thumbs/image2.jpg" /></a>
-            <a href="image3.jpg" class="slide" data-target="slideshow"><img src="thumbs/image3.jpg" /></a>
-            <a href="image4.jpg" class="slide" data-target="slideshow"><img src="thumbs/image4.jpg" /></a>
-        </div>
-        <script type="text/javascript">
-        $('#gallery2 > .slide').on('click', function(){
-            $(this).slideshow();
-            return false;
-        });
-        </script>
+        <h2>Options</h2>
+
         <pre><code>
-    &lt;div id=&quot;gallery2&quot;&gt;
-        &lt;a href=&quot;image1.jpg&quot; class=&quot;slide&quot; data-target=&quot;slideshow&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image2.jpg&quot; class=&quot;slide&quot; data-target=&quot;slideshow&quot;&gt;&lt;img src=&quot;thumbs/image2.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image3.jpg&quot; class=&quot;slide&quot; data-target=&quot;slideshow&quot;&gt;&lt;img src=&quot;thumbs/image3.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image4.jpg&quot; class=&quot;slide&quot; data-target=&quot;slideshow&quot;&gt;&lt;img src=&quot;thumbs/image4.jpg&quot; /&gt;&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;
-    $('#gallery2 &gt; .slide').on('click', function(){
-        $(this).slideshow();
-        return false;
-    });
-    &lt;/script&gt;
+    vanilla.slideshow.defaults = {
+        autostart: false,           // Automatically play the slideshow
+        opacity: 0.75,              // Overlay opacity
+        overlay: '#000',            // Overlay color
+        scaling: 'fitmax',          // Slide style display [fit, fitmax, fill]
+        showSpinner: true,          // Show spinner on loading
+        slideDelay:5000,            // Slide time on screen
+        zIndex: 1,                  // Overlay z-index
+    }
         </code></pre>
 
-        <h2>Single image with different scaling</h2>
-        <!-- Single image with different scaling -->
-        <div id="gallery3">
-            <a href="image1.jpg" id="slide1"><img src="thumbs/image1.jpg" /></a>
-            <a href="image2.jpg" id="slide2"><img src="thumbs/image2.jpg" /></a>
-            <a href="image3.jpg" id="slide3"><img src="thumbs/image3.jpg" /></a>
-        </div>
         <script type="text/javascript">
-        $('#slide1').on('click', function(){
-            $(this).slideshow({scaling:'fit'});
-            return false;
-        });
-        $('#slide2').on('click', function(){
-            $(this).slideshow({scaling:'fitmax'});
-            return false;
-        });
-        $('#slide3').on('click', function(){
-            $(this).slideshow({scaling:'fill'});
-            return false;
+        // Set background color
+        singles = vanilla('[id^=example]');
+        singles.each(function( el ) {
+            el.css('background', '#FBFBFB');
         });
         </script>
-        <pre><code>
-    &lt;div id=&quot;gallery3&quot;&gt;
-        &lt;a href=&quot;image1.jpg&quot; id=&quot;slide1&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image2.jpg&quot; id=&quot;slide2&quot;&gt;&lt;img src=&quot;thumbs/image2.jpg&quot; /&gt;&lt;/a&gt;
-        &lt;a href=&quot;image3.jpg&quot; id=&quot;slide3&quot;&gt;&lt;img src=&quot;thumbs/image3.jpg&quot; /&gt;&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;
-    $('#slide1').on('click', function(){
-        $(this).slideshow({scaling:'fit'});
-        return false;
-    });
-    $('#slide2').on('click', function(){
-        $(this).slideshow({scaling:'fitmax'});
-        return false;
-    });
-    $('#slide3').on('click', function(){
-        $(this).slideshow({scaling:'fill'});
-        return false;
-    });
-    &lt;/script&gt;
-        </code></pre>
     </body>
 </html>
