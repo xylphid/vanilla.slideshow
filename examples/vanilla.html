@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <script src="../../vanilla/vanilla.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../vanilla.slideshow.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" href="../vanilla.slideshow.css" type="text/css" media="screen" />
+        <style type="text/css">
+        body {
+            box-shadow:0px 0px 5px #000;
+            display:flex;
+            flex-direction:column;
+            margin:0 auto;
+            padding:10px 20px;
+            width:1000px;
+        }
+        pre {
+            box-shadow: 0px 0px 2px #000;
+            background-color:#F0F0F0;
+        }
+        div[id^=example] {
+            display:flex;
+        }
+        div.example a {
+            padding:5px;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>jQuery slideshow</h1>
+
+        <h2>Single image with automatic load</h2>
+        <!-- Single image automatic -->
+        <p class="tutorial">Add <strong>data-slideshow</strong> attribute to the link surrounding your thumbnail.</p>
+        <div id="example-1" class="example">
+            <a href="image1.jpg" data-slideshow><img src="thumbs/image1.jpg" /></a>
+        </div>
+        <pre><code>
+    &lt;div id=&quot;example-1&quot; class=&quot;example&quot;&gt;
+        &lt;a href=&quot;image1.jpg&quot; data-slideshow&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+    &lt;/div&gt;
+        </code></pre>
+
+        <h2>Automatically attaching to link</h2>
+        <!-- Single image and manually invoked -->
+        <div id="example-2" class="example">
+            <a href="image1.jpg"><img src="thumbs/image1.jpg" /></a>
+            <a href="image2.jpg"><img src="thumbs/image2.jpg" /></a>
+            <a href="image3.jpg"><img src="thumbs/image3.jpg" /></a>
+            <a href="image4.jpg"><img src="thumbs/image4.jpg" /></a>
+        </div>
+        <script type="text/javascript">
+        vanilla( '#example-2 > a' ).on('click', function(event) {
+            event.preventDefault();
+            vanilla( this ).slideshow();
+        });
+        </script>
+        <pre><code>
+    &lt;div id=&quot;example-2&quot;&gt;
+        &lt;a href=&quot;image1.jpg&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;a href=&quot;image2.jpg&quot;&gt;&lt;img src=&quot;thumbs/image2.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;a href=&quot;image3.jpg&quot;&gt;&lt;img src=&quot;thumbs/image3.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;a href=&quot;image4.jpg&quot;&gt;&lt;img src=&quot;thumbs/image4.jpg&quot; /&gt;&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    vanilla( '#example-2 &gt; a' ).on('click', function(event) {
+        event.preventDefault();
+        vanilla( this ).slideshow();
+    });
+    &lt;/script&gt;
+        </code></pre>
+
+        <h2>Attaching slideshow to a link collection</h2>
+        <!-- Single image and manually invoked -->
+        <div id="example-3" class="example">
+            <a href="image1.jpg"><img src="thumbs/image1.jpg" /></a>
+        </div>
+        <script type="text/javascript">
+        vanilla.slideshow( '#example-3 > a' );
+
+        // Append second image
+        vanilla('<a>').attr('href', 'image2.jpg')
+            .append( vanilla('<img>').attr('src', 'thumbs/image2.jpg') )
+            .appendTo('#example-3');
+        // Append third image
+        vanilla('<a>').attr('href', 'image3.jpg')
+            .append( vanilla('<img>').attr('src', 'thumbs/image3.jpg') )
+            .appendTo('#example-3');
+        // Append fourth image
+        vanilla('<a>').attr('href', 'image4.jpg')
+            .append( vanilla('<img>').attr('src', 'thumbs/image4.jpg') )
+            .appendTo('#example-3');
+        </script>
+        <pre><code>
+    &lt;div id=&quot;example-2&quot;&gt;
+        &lt;a href=&quot;image1.jpg&quot;&gt;&lt;img src=&quot;thumbs/image1.jpg&quot; /&gt;&lt;/a&gt;
+        &lt;!-- Not loaded content will match the selector --&gt;
+    &lt;/div&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    vanilla.slideshow( '#example-3 &gt; a' );
+
+    // Append second image
+    vanilla('&lt;a&gt;').attr('href', 'image2.jpg')
+        .append( vanilla('&lt;img&gt;').attr('src', 'thumbs/image2.jpg') )
+        .appendTo('#example-3');
+
+    // Append third image
+    vanilla('&lt;a&gt;').attr('href', 'image3.jpg')
+        .append( vanilla('&lt;img&gt;').attr('src', 'thumbs/image3.jpg') )
+        .appendTo('#example-3');
+
+    // Append fourth image
+    vanilla('&lt;a&gt;').attr('href', 'image4.jpg')
+        .append( vanilla('&lt;img&gt;').attr('src', 'thumbs/image4.jpg') )
+        .appendTo('#example-3');
+    &lt;/script&gt;
+        </code></pre>
+
+        <h2>Options</h2>
+
+        <pre><code>
+    vanilla.slideshow.defaults = {
+        autostart: false,           // Automatically play the slideshow
+        opacity: 0.75,              // Overlay opacity
+        overlay: '#000',            // Overlay color
+        scaling: 'fitmax',          // Slide style display [fit, fitmax, fill]
+        showSpinner: true,          // Show spinner on loading
+        slideDelay:5000,            // Slide time on screen
+        zIndex: 1,                  // Overlay z-index
+    }
+        </code></pre>
+
+        <script type="text/javascript">
+        // Set background color
+        singles = vanilla('[id^=example]');
+        singles.each(function( el ) {
+            el.css('background', '#FBFBFB');
+        });
+        </script>
+    </body>
+</html>
