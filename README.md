@@ -1,4 +1,4 @@
-# jQuery-slideshow
+# vanilla-slideshow
 
 vanilla.slideshow is a simple module that makes it easy to display your image or browse your galleries.
 
