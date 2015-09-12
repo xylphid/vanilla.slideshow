@@ -108,6 +108,7 @@
     display:flex;
     margin:0 auto;
     opacity:0;
+    transition:opacity 0.5s;
 }
 .vanilla-slideshow > .vanilla-slider img.fit {
     max-width:100%;

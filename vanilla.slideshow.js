@@ -1,6 +1,6 @@
 /**
  * Vanilla Slideshow ;) (https://github.com/xylphid)
- * Version 0.1.0
+ * Version 0.1.1
  *
  * @author Anthony PERIQUET
  */
@@ -180,9 +180,9 @@
             var slide = this.slide;
             var terminus = dir == 'left' ? -slide.outerWidth()-100 : slide.parent().outerWidth();
             var pad = (dir == 'left') ? -10 : 10;
-            slide.css('margin-left', slide.nodes[0].offsetLeft + 'px');
+            slide.css('margin-left', slide.nodes[0].offsetLeft + 'px')
+                .css('opacity', 0);
 
-            slide.fadeOut(10);
             (function swipe(){
                 var left = (slide.css('margin-left') ? parseInt(slide.css('margin-left')) : 0) + pad;
                 slide.css('margin-left', left+'px');
