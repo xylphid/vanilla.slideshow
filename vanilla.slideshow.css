@@ -11,6 +11,7 @@
     position:fixed;
     top:50%;
     width:100%;
+    transition:margin-top 1s;
 }
 
 .vanilla-slider {
@@ -106,9 +107,20 @@
 .vanilla-slideshow > .vanilla-slider img {
     align-self:center;
     display:flex;
+    left:0;
     margin:0 auto;
+    opacity:1;
+    position:absolute;
+    right:0;
+    transition:opacity 0.5s, left 0.5s;
+}
+.vanilla-slideshow > .vanilla-slider img.removeToLeft {
     opacity:0;
-    transition:opacity 0.5s;
+    left:-100%;
+}
+.vanilla-slideshow > .vanilla-slider img.removeToRight {
+    opacity:0;
+    left:100%;
 }
 .vanilla-slideshow > .vanilla-slider img.fit {
     max-width:100%;

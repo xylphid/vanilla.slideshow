@@ -1,6 +1,6 @@
 /**
  * Vanilla Slideshow ;) (https://github.com/xylphid)
- * Version 0.1.1
+ * Version 0.1.2
  *
  * @author Anthony PERIQUET
  */
@@ -18,6 +18,7 @@
         this.options = extend(vanilla.slideshow.defaults, options);
         this.autostart = this.options.autostart;
         this.opened = false;
+        this.slides = [];
 
         if (typeof query !== typeof undefined) {
             this.elm = vanilla( query );
@@ -107,27 +108,36 @@
         },
         
         // Show slide
-        show: function() {
-            this.slide = vanilla('<img>').attr('src', this.elm.attr('href'))
+        show: function( callbackDirection ) {
+            this.showSpinner();
+            var slide = vanilla('<img>').attr('src', this.elm.attr('href'))
                 .addClass('slide')
                 .addClass( this.options.scaling )
                 .attr('alt', 'Vanilla Slideshow')
                 .load(function() {
+                    vanilla(this).prependTo( '.vanilla-slideshow > .vanilla-slider' );
                     currentSlideshow.centerSlide();
-                    vanilla(this).appendTo( '.vanilla-slideshow > .vanilla-slider' )
-                        .fadeIn(vanilla.slideshow.hideSpinner);
+                    vanilla.slideshow.hideSpinner();
+
+                    // If callbackDirection animate the previous slide out
+                    if (callbackDirection)
+                        currentSlideshow.slideOut( callbackDirection );
+                    
+                    // Set timeout till next slide
                     if (vanilla.slideshow.isPlaying())
                         vanilla.slideshow.setPlayer(setTimeout(vanilla.slideshow.next, currentSlideshow.options.slideDelay));
                 });
+            this.slides.push(slide);
         },
 
         centerSlide: function() {
+            var slide = this.slides.slice(-1)[0];
             if (this.options.scaling == 'fill') {
-                scalingH = this.modal.outerHeight() / this.slide.nodes[0].naturalHeight;
-                scalingW = this.modal.outerWidth() / this.slide.nodes[0].naturalWidth;
+                scalingH = this.modal.outerHeight() / slide.nodes[0].naturalHeight;
+                scalingW = this.modal.outerWidth() / slide.nodes[0].naturalWidth;
                 var scale = scalingH > scalingW ? scalingH : scalingW;
-                var marginTop = (this.modal.outerHeight() - (this.slide.nodes[0].naturalHeight * scale)) / 2;
-                this.slide.css('transform-origin', '0px 0px 0px')
+                var marginTop = (this.modal.outerHeight() - (slide.nodes[0].naturalHeight * scale)) / 2;
+                slide.css('transform-origin', '0px 0px 0px')
                     .css('transform', 'translate3d(0px, ' + marginTop + 'px, 0px) scale(' + scale + ')');
             }
         },
@@ -176,38 +186,30 @@
 
         // Animate de previous slide out
         slideOut: function(dir) {
-            this.showSpinner();
-            var slide = this.slide;
-            var terminus = dir == 'left' ? -slide.outerWidth()-100 : slide.parent().outerWidth();
-            var pad = (dir == 'left') ? -10 : 10;
-            slide.css('margin-left', slide.nodes[0].offsetLeft + 'px')
-                .css('opacity', 0);
-
-            (function swipe(){
-                var left = (slide.css('margin-left') ? parseInt(slide.css('margin-left')) : 0) + pad;
-                slide.css('margin-left', left+'px');
-                ((dir=='left'&&left<terminus)||(dir=='right'&&left>terminus))?slide.remove():setTimeout(swipe, 1);
-            })();
+            var slide = this.slides.shift();
+            // Attach transition end event
+            slide.on('transitionend', function() {
+                vanilla(this).remove();
+            });
+            slide.addClass(dir == 'left' ? 'removeToLeft' : 'removeToRight');
         },
 
         // Go to next slide
         next: function() {
             if (this.options.single) return;
-            this.slideOut('left');
             next = this.elm.next();
             if (!next) { next = this.elm.parent().firstChild(); }
             this.elm = next;
-            this.show();
+            this.show( 'left' );
         },
 
         // Go to prevous slide
         prev: function() {
             if (this.options.single) return;
-            this.slideOut('right');
             previous = this.elm.prev();
             if (!previous) { previous = this.elm.parent().lastChild(); }
             this.elm = previous;
-            this.show();
+            this.show( 'right' );
         },
 
         // Play the slideshow
