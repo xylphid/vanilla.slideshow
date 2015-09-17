@@ -1,6 +1,6 @@
 /**
  * Vanilla Slideshow ;) (https://github.com/xylphid)
- * Version 0.1.2
+ * Version 0.1.3
  *
  * @author Anthony PERIQUET
  */
@@ -180,7 +180,8 @@
         // Close the slideshow
         close: function() {
             currentSlideshow.modal.fadeOut(100);
-            currentSlideshow.overlay.fadeOut();
+            currentSlideshow.overlay.fadeOut()
+                .css('z-index', -1);
             this.opened = false;
         },
 
