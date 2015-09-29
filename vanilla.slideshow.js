@@ -1,6 +1,6 @@
 /**
  * Vanilla Slideshow ;) (https://github.com/xylphid)
- * Version 0.1.3
+ * Version 0.1.4
  *
  * @author Anthony PERIQUET
  */
@@ -110,7 +110,11 @@
         // Show slide
         show: function( callbackDirection ) {
             this.showSpinner();
-            var slide = vanilla('<img>').attr('src', this.elm.attr('href'))
+            var resizable = this.options.resizeUrl ? 
+                this.options.resizeUrl
+                    .replace('{width}', parseInt(this.modal.css('width')))
+                    .replace('{height}', parseInt(this.modal.css('height'))) : '';
+            var slide = vanilla('<img>').attr('src', this.elm.attr('href') + resizable)
                 .addClass('slide')
                 .addClass( this.options.scaling )
                 .attr('alt', 'Vanilla Slideshow')
@@ -244,6 +248,7 @@
         autostart: false,
         opacity: 0.75,
         overlay: '#000',
+        resizeUrl: null,
         scaling: 'fitmax',
         showSpinner: true,
         slideDelay:5000,

@@ -88,6 +88,7 @@ vanilla.slideshow.defaults = {
     autostart: false,           // Automatically play the slideshow
     opacity: 0.75,              // Overlay opacity
     overlay: '#000',            // Overlay color
+    resizeUrl: null,            // Pattern for on the fly resize. Must contain {width} and {height} (ex: /{width}/{height})
     scaling: 'fitmax',          // Slide style display [fit, fitmax, fill]
     showSpinner: true,          // Show spinner on loading
     slideDelay:5000,            // Slide time on screen
